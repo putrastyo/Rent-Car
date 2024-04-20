@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckToken;
 use Illuminate\Http\Request;
@@ -22,4 +23,6 @@ Route::middleware([CheckToken::class])->group(function () {
     Route::put('/register/{id}', [UserController::class, 'update']);
     Route::delete('/register/{id}', [UserController::class, 'destroy']);
 
+    // rent
+    Route::apiResource('/rent', RentController::class);
 });

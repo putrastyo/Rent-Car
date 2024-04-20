@@ -37,4 +37,9 @@ class AuthController extends Controller
 
         return response()->json(["message" => "logout success"], 200);
     }
+
+    public function get_current_user(){
+        $user = Auth::user();
+        return response()->json($user, 200);
+    }
 }
