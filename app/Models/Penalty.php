@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rent extends Model
+class Penalty extends Model
 {
     use HasFactory;
 
     protected $guarded = 'id';
 
-    // 1 rent hanya untuk 1 user
+    // 1 penalty hanya 1 user
     public function user(){
         return $this->belongsTo(User::class);
     }
 
-    // 1 rent hanya 1 return
+    // 1 penalty hanya 1 return car
     public function carReturn(){
         return $this->belongsTo(CarReturn::class);
     }

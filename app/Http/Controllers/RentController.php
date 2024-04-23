@@ -21,13 +21,13 @@ class RentController extends Controller
             $rents = Rent::where('user_id', Auth::user()->id)->get();
         }
 
-        return $rents;
+        return response()->json($rents);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request)  // add data
     {
         // 1. Jika bukan admin, maka tidak boleh
         if(Auth::user()->role != 'admin') {
@@ -35,7 +35,7 @@ class RentController extends Controller
         }
         // 2. validasi
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id', // ada di kolom user id
             'tenant' => 'required',
             'no_car' => 'required',
             'date_borrow' => 'required',
@@ -45,10 +45,10 @@ class RentController extends Controller
         ]);
 
         if($validator->fails()) {
-            return response()->json(["message" => "Invalid field"], 422);
+            return response()->json(["message" => "Invalid field"], 422); // jika data tidak valid
         }
         // 3. simpan database
-        $rent = new Rent();
+        $rent = new Rent(); // menambah data
         $rent->user_id = $request->user_id;
         $rent->tenant = $request->tenant;
         $rent->no_car = $request->no_car;
@@ -100,7 +100,7 @@ class RentController extends Controller
             return response()->json(["message" => "Invalid field"], 422);
         }
         // 3. update data di database
-        $rent = Rent::find($id);
+        $rent = Rent::find($id); // memperbarui data
         $rent->user_id = $request->user_id;
         $rent->tenant = $request->tenant;
         $rent->no_car = $request->no_car;
@@ -125,6 +125,7 @@ class RentController extends Controller
         }
         // 2. delete
         $rent = Rent::find($id);
+
         if(!$rent) {
             return response()->json(["message" => "Rent not found"], 404);
         }

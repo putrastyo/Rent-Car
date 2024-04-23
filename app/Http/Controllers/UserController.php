@@ -22,7 +22,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()) {
-            return response()->json(["message" => "Invalid login"], 401);
+            return response()->json(["message" => "Invalid field"], 401);
         }
         // 3. simpan database
         $user = new User();
@@ -49,6 +49,21 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        // 1. get data by id
+        $user = User::find($id);
+        // 2. Jika data tidak ditemukan
+        if(!$user) {
+            return response()->json(["message" => "User not found"], 404);
+        }
+        // 3. return json
+        return response()->json($user);
+    }
+
     public function update(Request $request, string $id){
         // 1. Jika bukan admin, maka tidak boleh
         if(Auth::user()->role != 'admin'){
@@ -57,7 +72,6 @@ class UserController extends Controller
         // 2. validasi
         $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required',
             'phone' => 'required'
         ]);
 
